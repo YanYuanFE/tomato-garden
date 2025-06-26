@@ -227,7 +227,7 @@ const Index = () => {
     }
 
     // Find harvestable tomato
-    const harvestableTomato = userTomatoes.find((t) => t.isHarvestable);
+    const harvestableTomato = userTomatoes.find((t) => t.isHarvestable && !t.isHarvested);
     if (!harvestableTomato) {
       toast.error('No harvestable tomato found');
       return;
