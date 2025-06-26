@@ -4,12 +4,12 @@
 
 // 番茄类型枚举
 export enum TomatoType {
-  Normal = 0,
-  Yellow = 1,
-  Purple = 2,
-  Flame = 3,
-  Ice = 4,
-  Rainbow = 5
+  Normal = 'Normal',
+  Yellow = 'Yellow',
+  Purple = 'Purple',
+  Flame = 'Flame',
+  Ice = 'Ice',
+  Rainbow = 'Rainbow'
 }
 
 // 番茄类型信息

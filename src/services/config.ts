@@ -21,8 +21,8 @@ export const NETWORKS: Record<string, NetworkConfig> = {
     rpcUrl: 'https://starknet-sepolia.public.blastapi.io/rpc/v0_8',
     explorerUrl: 'https://sepolia.starkscan.co',
     contracts: {
-      tomatoNFT: '0x02fbcb0931c47c544630824266ac9f9c3e0bf57383dccddff78bf135f944f177',
-      tomatoStaking: '0x0425b48131c54417af983d80184a0f048d41898725fad476d6e68a2a27d934c3',
+      tomatoNFT: '0x06ad0801909c9f10d7cb15eb83d13d157d87dae22c2d7d84d8e79a1b390580fa',
+      tomatoStaking: '0x053c4810eed961c48745c2017cb8406c2ea0b3b66e04091700acdc824c85d45a',
       strkToken: '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d'
     },
     minStakeAmount: '1000000000000000000', // 1 STRK

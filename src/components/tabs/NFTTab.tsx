@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Gift, Loader2 } from 'lucide-react';
 import { TomatoInfo, UserStats, TOMATO_TYPE_INFO } from '@/services';
+import { NFTCardImage } from '@/components/NFTImage';
 
 interface NFT {
   id: string;
@@ -19,10 +20,12 @@ interface NFTTabProps {
   loading: boolean;
 }
 
-const NFTTab: React.FC<NFTTabProps> = ({ nftCollection, userTomatoes, userStats, loading }) => {
+const NFTTab: React.FC<NFTTabProps> = ({ userTomatoes, userStats, loading }) => {
   // Get actually harvested tomatoes (NFTs that have been minted)
   const actualNFTs = userTomatoes.filter((t) => t.isHarvested && t.metadata.harvested_at > 0);
-  
+
+  console.log(actualNFTs, 'nfts');
+
   // Get ready-to-harvest tomatoes (not yet harvested as NFTs)
   const readyToHarvest = userTomatoes.filter((t) => t.isHarvestable && !t.isHarvested);
 
@@ -51,7 +54,7 @@ const NFTTab: React.FC<NFTTabProps> = ({ nftCollection, userTomatoes, userStats,
               <div className="grid grid-cols-3 gap-2">
                 {Object.entries(userStats.tomatoesByType).map(([type, count]) => {
                   const tomatoType = parseInt(type);
-                  const typeInfo = TOMATO_TYPE_INFO[tomatoType];
+                  const typeInfo = TOMATO_TYPE_INFO[tomatoType as unknown as keyof typeof TOMATO_TYPE_INFO];
                   if (!typeInfo) return null;
                   return (
                     <div key={type} className="text-center p-2 border border-gray-300 rounded">
@@ -91,8 +94,9 @@ const NFTTab: React.FC<NFTTabProps> = ({ nftCollection, userTomatoes, userStats,
             <div className="grid grid-cols-2 gap-3">
               {actualNFTs.map((tomato) => {
                 const typeInfo = TOMATO_TYPE_INFO[tomato.metadata.tomato_type];
+                console.log(typeInfo, tomato, TOMATO_TYPE_INFO, 'to');
                 if (!typeInfo) return null;
-                
+
                 const rarityColor =
                   typeInfo.rarity === '传说'
                     ? 'border-yellow-400 bg-yellow-50'
@@ -104,7 +108,12 @@ const NFTTab: React.FC<NFTTabProps> = ({ nftCollection, userTomatoes, userStats,
 
                 return (
                   <div key={tomato.id} className={`border-2 ${rarityColor} p-3 text-center pixel-card`}>
-                    <div className="text-3xl mb-2">{typeInfo.emoji}</div>
+                    <NFTCardImage
+                      tokenUri={tomato.tokenUri}
+                      fallbackEmoji={typeInfo.emoji}
+                      name={`${typeInfo.name} Tomato #${tomato.id}`}
+                      className="w-full h-24 object-cover mb-2 rounded"
+                    />
                     <h4 className="text-sm font-bold text-gray-800 pixel-font">
                       {typeInfo.name} Tomato #{tomato.id}
                     </h4>
@@ -141,23 +150,21 @@ const NFTTab: React.FC<NFTTabProps> = ({ nftCollection, userTomatoes, userStats,
             <CardTitle className="flex items-center text-lg text-gray-800 pixel-font">🍅 Ready to Harvest</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-600 pixel-font mb-3">
-              These tomatoes are ready to be harvested as NFTs!
-            </p>
+            <p className="text-sm text-gray-600 pixel-font mb-3">These tomatoes are ready to be harvested as NFTs!</p>
             <div className="grid grid-cols-2 gap-3">
               {readyToHarvest.map((tomato) => {
                 const typeInfo = TOMATO_TYPE_INFO[tomato.metadata.tomato_type];
                 if (!typeInfo) return null;
-                
+
                 return (
                   <div key={tomato.id} className="border-2 border-orange-400 bg-orange-100 p-3 text-center pixel-card">
-                    <div className="text-3xl mb-2">{typeInfo.emoji}</div>
+                    <div className="w-full h-24 bg-orange-50 rounded mb-2 flex items-center justify-center text-4xl border border-orange-300">
+                      {typeInfo.emoji}
+                    </div>
                     <h4 className="text-sm font-bold text-gray-800 pixel-font">
                       {typeInfo.name} Tomato #{tomato.id}
                     </h4>
-                    <Badge className="text-xs pixel-font mb-1 bg-orange-500">
-                      Ready to Harvest!
-                    </Badge>
+                    <Badge className="text-xs pixel-font mb-1 bg-orange-500">Ready to Harvest!</Badge>
                     <div className="text-xs text-gray-600 pixel-font space-y-1">
                       <p>Rarity: {typeInfo.rarity}</p>
                       <p>Staked: {(parseFloat(tomato.metadata.staked_amount) / 1e18).toFixed(2)} STRK</p>
@@ -183,7 +190,7 @@ const NFTTab: React.FC<NFTTabProps> = ({ nftCollection, userTomatoes, userStats,
                 .map((tomato) => {
                   const typeInfo = TOMATO_TYPE_INFO[tomato.metadata.tomato_type];
                   if (!typeInfo) return null;
-                  
+
                   return (
                     <div key={tomato.id} className="border-2 border-green-400 bg-green-50 p-3 text-center pixel-card">
                       <div className="text-3xl mb-2">{typeInfo.emoji}</div>
@@ -193,9 +200,7 @@ const NFTTab: React.FC<NFTTabProps> = ({ nftCollection, userTomatoes, userStats,
                       <div className="text-xs text-gray-600 pixel-font space-y-1">
                         <p>Growth Stage: {tomato.currentGrowthStage}/4</p>
                         <p>Staked: {(parseFloat(tomato.metadata.staked_amount) / 1e18).toFixed(2)} STRK</p>
-                        {tomato.timeToNextStage && (
-                          <p>Next Stage: {Math.ceil(tomato.timeToNextStage / 3600)}h</p>
-                        )}
+                        {tomato.timeToNextStage && <p>Next Stage: {Math.ceil(tomato.timeToNextStage / 3600)}h</p>}
                       </div>
                     </div>
                   );

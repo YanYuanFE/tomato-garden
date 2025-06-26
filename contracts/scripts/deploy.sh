@@ -40,7 +40,7 @@ echo ""
 
 # 获取部署者地址
 echo "📋 获取部署者地址..."
-DEPLOYER_ADDRESS=$(sncast --profile $ACCOUNT_NAME account list | grep -A5 "- $ACCOUNT_NAME:" | grep "address:" | grep -o '0x[0-9a-fA-F]*')
+DEPLOYER_ADDRESS=$(sncast --profile $ACCOUNT_NAME account list | grep "address:" | grep -o '0x[0-9a-fA-F]*')
 
 if [ -z "$DEPLOYER_ADDRESS" ]; then
     echo "❌ 无法获取部署者地址"
@@ -131,50 +131,15 @@ echo ""
 # 部署 TomatoNFT 合约
 echo "🚀 部署 TomatoNFT 合约..."
 
-# TomatoNFT 构造函数参数: name, symbol, base_uri, owner, authorized_minter, growth_time_per_stage, max_growth_stage
+# TomatoNFT 构造函数参数: base_uri, owner, authorized_minter, growth_time_per_stage, max_growth_stage
 # 注意：authorized_minter 先设为 owner，稍后会更新为 TomatoStaking 合约地址
-# 临时使用简化的参数进行测试
 echo "正在准备构造函数参数..."
 
-# 将字符串转换为适当的格式
-NAME_HEX=$(python3 -c "
-import sys
-s = 'Tomato Garden NFT'
-data = s.encode('utf-8')
-# ByteArray format: [data_len, data_words..., pending_word, pending_word_len]
-words = []
-for i in range(0, len(data), 31):
-    chunk = data[i:i+31]
-    if len(chunk) == 31:
-        words.append('0x' + chunk.hex())
-    else:
-        pending = '0x' + chunk.hex() if chunk else '0x0'
-        print(f'{len(words)} ' + ' '.join(words) + f' {pending} {len(chunk)}')
-        sys.exit()
-if len(data) % 31 == 0:
-    print(f'{len(words)} ' + ' '.join(words) + ' 0x0 0')
-")
-
-SYMBOL_HEX=$(python3 -c "
-import sys
-s = 'TOMATO'
-data = s.encode('utf-8')
-words = []
-for i in range(0, len(data), 31):
-    chunk = data[i:i+31]
-    if len(chunk) == 31:
-        words.append('0x' + chunk.hex())
-    else:
-        pending = '0x' + chunk.hex() if chunk else '0x0'
-        print(f'{len(words)} ' + ' '.join(words) + f' {pending} {len(chunk)}')
-        sys.exit()
-if len(data) % 31 == 0:
-    print(f'{len(words)} ' + ' '.join(words) + ' 0x0 0')
-")
+# 将base_uri转换为适当的格式
 
 URI_HEX=$(python3 -c "
 import sys
-s = 'ipfs://bafybeiemaouyxb2lltopoahht44e6dqwcedclsw2u573yu45s3zdz3yf3u/'
+s = 'ipfs://bafybeihvjpkcw2yk2n447fcnfnjmfrwsnteqtxavdxi6dxjaqcaxxgmgtu/'
 data = s.encode('utf-8')
 words = []
 for i in range(0, len(data), 31):
@@ -189,12 +154,10 @@ if len(data) % 31 == 0:
     print(f'{len(words)} ' + ' '.join(words) + ' 0x0 0')
 ")
 
-echo "Name: $NAME_HEX"
-echo "Symbol: $SYMBOL_HEX" 
 echo "URI: $URI_HEX"
 
 # 使用部署者地址作为初始owner和authorized_minter
-NFT_DEPLOY_OUTPUT=$(sncast --profile $ACCOUNT_NAME deploy --class-hash $NFT_CLASS_HASH --constructor-calldata $NAME_HEX $SYMBOL_HEX $URI_HEX $DEPLOYER_ADDRESS $DEPLOYER_ADDRESS 3600 4 2>&1)
+NFT_DEPLOY_OUTPUT=$(sncast --profile $ACCOUNT_NAME deploy --class-hash $NFT_CLASS_HASH --constructor-calldata $URI_HEX $DEPLOYER_ADDRESS $DEPLOYER_ADDRESS 3600 4 2>&1)
 
 if [ $? -ne 0 ]; then
     echo "❌ TomatoNFT 合约部署失败"

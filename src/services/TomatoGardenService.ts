@@ -22,10 +22,9 @@ import { calculateMutationRate, calculateCollectionScore, getCollectionLevel, fo
 export class TomatoGardenService {
   private nftService: TomatoNFTService;
   private stakingService: TomatoStakingService;
-  private network: string;
 
   constructor(network: string = 'sepolia') {
-    this.network = network;
+    // this.network = network;
     this.nftService = new TomatoNFTService(network);
     this.stakingService = new TomatoStakingService(network);
   }
@@ -246,7 +245,7 @@ export class TomatoGardenService {
     const missingTypes: TomatoType[] = [];
     for (const [type, count] of Object.entries(userStats.tomatoesByType)) {
       if (count === 0) {
-        missingTypes.push(parseInt(type) as TomatoType);
+        missingTypes.push(parseInt(type) as unknown as TomatoType);
       }
     }
 
@@ -367,36 +366,36 @@ export class TomatoGardenService {
   /**
    * 计算到下一阶段的时间
    */
-  private calculateTimeToNextStage(plantedAt: number, lastWatered: number, currentStage: GrowthStage): number {
-    const GROWTH_TIME_PER_STAGE = 86400; // 24小时
-    const WATERING_ACCELERATION = 3;
+  // private calculateTimeToNextStage(plantedAt: number, lastWatered: number, currentStage: GrowthStage): number {
+  //   const GROWTH_TIME_PER_STAGE = 86400; // 24小时
+  //   const WATERING_ACCELERATION = 3;
 
-    if (currentStage >= GrowthStage.Mature) return 0;
+  //   if (currentStage >= GrowthStage.Mature) return 0;
 
-    const now = Math.floor(Date.now() / 1000);
-    const nextStage = currentStage + 1;
-    const requiredTime = nextStage * GROWTH_TIME_PER_STAGE;
+  //   const now = Math.floor(Date.now() / 1000);
+  //   const nextStage = currentStage + 1;
+  //   const requiredTime = nextStage * GROWTH_TIME_PER_STAGE;
 
-    let elapsedTime = now - plantedAt;
-    if (lastWatered > plantedAt) {
-      const wateredTime = now - lastWatered;
-      const preWaterTime = lastWatered - plantedAt;
-      elapsedTime = preWaterTime + wateredTime * WATERING_ACCELERATION;
-    }
+  //   let elapsedTime = now - plantedAt;
+  //   if (lastWatered > plantedAt) {
+  //     const wateredTime = now - lastWatered;
+  //     const preWaterTime = lastWatered - plantedAt;
+  //     elapsedTime = preWaterTime + wateredTime * WATERING_ACCELERATION;
+  //   }
 
-    return Math.max(0, requiredTime - elapsedTime);
-  }
+  //   return Math.max(0, requiredTime - elapsedTime);
+  // }
 
   /**
    * 监听合约事件
    */
-  async listenToEvents(eventTypes: string[], fromBlock: number, callback: (event: any) => void): Promise<void> {
-    // 同时监听NFT和Staking合约的事件
-    await Promise.all([
-      this.nftService.listenToTransferEvents(fromBlock, callback),
-      // this.stakingService.listenToEvents(eventTypes, fromBlock, callback)
-    ]);
-  }
+  // async listenToEvents(eventTypes: string[], fromBlock: number, callback: (event: any) => void): Promise<void> {
+  //   // 同时监听NFT和Staking合约的事件
+  //   // await Promise.all([
+  //   //   this.nftService.listenToTransferEvents(fromBlock, callback)
+  //   //   // this.stakingService.listenToEvents(eventTypes, fromBlock, callback)
+  //   // ]);
+  // }
 
   /**
    * 获取网络配置

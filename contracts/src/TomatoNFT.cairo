@@ -145,16 +145,14 @@ mod TomatoNFT {
     #[constructor]
     fn constructor(
         ref self: ContractState,
-        name: ByteArray,
-        symbol: ByteArray,
         base_uri: ByteArray,
         owner: ContractAddress,
         authorized_minter: ContractAddress,
         growth_time_per_stage: u64,
         max_growth_stage: u8
     ) {
-        // 初始化 ERC721
-        self.erc721.initializer(name, symbol, base_uri);
+        // 初始化 ERC721 - 使用固定的name和symbol
+        self.erc721.initializer("Tomato Garden NFT", "TOMATO", base_uri);
         
         // 初始化 Ownable
         self.ownable.initializer(owner);

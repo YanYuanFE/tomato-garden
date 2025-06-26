@@ -14,11 +14,7 @@ mod tests {
         let contract = declare("TomatoNFT").unwrap().contract_class();
         
         let mut constructor_calldata = array![];
-        let name: ByteArray = "Tomato NFT";
-        let symbol: ByteArray = "TOMATO";
         let base_uri: ByteArray = "https://api.tomato.garden/metadata/";
-        constructor_calldata.append_serde(name);
-        constructor_calldata.append_serde(symbol);
         constructor_calldata.append_serde(base_uri);
         constructor_calldata.append_serde(OWNER());
         constructor_calldata.append_serde(OWNER());
@@ -28,8 +24,8 @@ mod tests {
         let (contract_address, _) = contract.deploy(@constructor_calldata).unwrap();
         let metadata_contract = IERC721MetadataDispatcher { contract_address };
         
-        // 验证合约部署成功
+        // 验证合约部署成功 - name现在是硬编码的
         let name = metadata_contract.name();
-        assert(name == "Tomato NFT", 'Wrong name');
+        assert(name == "Tomato Garden NFT", 'Wrong name');
     }
 }

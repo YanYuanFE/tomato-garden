@@ -271,7 +271,7 @@ export class TomatoStakingService extends BaseContractService {
   async getTomatoType(tomatoId: string): Promise<TomatoType> {
     const contract = await this.getStakingContract();
     const type = await this.executeCall<number>(contract, 'get_tomato_type', [tomatoId]);
-    return type as TomatoType;
+    return type as unknown as TomatoType;
   }
 
   /**
@@ -300,8 +300,8 @@ export class TomatoStakingService extends BaseContractService {
     const timeToNext = timeToNextStage(plantedAt, lastWateredTime, Number(currentStage) as GrowthStage);
 
     // 如果已收获，从NFT合约获取token URI
-    let tokenUri = '';
-    let owner = '';
+    const tokenUri = '';
+    const owner = '';
 
     if (isHarvested) {
       // 需要从NFT服务获取这些信息
@@ -309,12 +309,18 @@ export class TomatoStakingService extends BaseContractService {
       // owner = await nftService.getOwner(tomatoId);
     }
 
+    const type = Object.keys(metadata.tomato_type.variant).filter(
+      (key) => metadata.tomato_type.variant[key] !== undefined
+    )[0];
+
     return {
       id: tomatoId,
       owner,
       metadata: {
         ...metadata,
-        planted_at: Number(metadata.planted_at || 0)
+        harvested_at: Number(metadata.harvested_at || 0),
+        planted_at: Number(metadata.planted_at || 0),
+        tomato_type: type
       },
       currentGrowthStage: Number(currentStage as GrowthStage),
       lastWatered: lastWateredTime,

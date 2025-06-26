@@ -1,19 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Button } from '@/components/ui/button';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { ConnectButton } from '@/components/connect-button';
 import { GardenTab, NFTTab, LeaderboardTab, TasksTab, BottomNavigation } from '@/components/tabs';
 import { toast } from 'sonner';
 import { useAccount } from '@starknet-react/core';
-import {
-  TomatoGardenService,
-  TomatoInfo,
-  UserStats,
-  TomatoType,
-  GrowthStage,
-  TOMATO_TYPE_INFO,
-  GROWTH_STAGE_INFO
-} from '@/services';
+import { TomatoGardenService, TomatoInfo, UserStats, TOMATO_TYPE_INFO } from '@/services';
 
 interface NFT {
   id: string;
@@ -41,9 +32,9 @@ const Index = () => {
   const [currentStage, setCurrentStage] = useState(0);
   const [progress, setProgress] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState('1h 00m');
-  const [lastWatered, setLastWatered] = useState<Date | null>(null);
+  const [, setLastWatered] = useState<Date | null>(null);
   const [canWater, setCanWater] = useState(true);
-  const [plantedAt, setPlantedAt] = useState<Date | null>(null);
+  const [, setPlantedAt] = useState<Date | null>(null);
 
   // Initialize service when account is connected
   useEffect(() => {
@@ -53,7 +44,7 @@ const Index = () => {
         try {
           const service = new TomatoGardenService('sepolia');
           console.log(service, 'ss');
-          await service.connectAccount(account);
+          await service.connectAccount(account as any);
           serviceRef.current = service;
           setServiceReady(true);
 
@@ -108,7 +99,7 @@ const Index = () => {
             tomatoType: t.metadata.tomato_type
           };
         })
-        .filter(Boolean) as NFT[];
+        .filter(Boolean) as any[];
       setNftCollection(nfts);
 
       // Update planting state based on tomatoes
@@ -239,9 +230,10 @@ const Index = () => {
       return;
     }
 
+    let toastId;
     try {
       setLoading(true);
-      toast.loading('Harvesting tomato...');
+      toastId = toast.loading('Harvesting tomato...');
 
       const result = await serviceRef.current.harvestTomato(harvestableTomato.id);
 
@@ -259,7 +251,7 @@ const Index = () => {
       toast.error('Error occurred while harvesting tomato');
     } finally {
       setLoading(false);
-      toast.dismiss();
+      toast.dismiss(toastId);
     }
   };
 

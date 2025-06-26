@@ -92,7 +92,7 @@ export class TomatoNFTService extends BaseContractService {
       planted_at: parseInt(result.planted_at, 10),
       harvested_at: parseInt(result.harvested_at, 10),
       staked_amount: result.staked_amount?.toString(),
-      tomato_type: parseInt(result.tomato_type, 10) as TomatoType
+      tomato_type: parseInt(result.tomato_type, 10) as unknown as TomatoType
     };
   }
 
@@ -102,7 +102,7 @@ export class TomatoNFTService extends BaseContractService {
   async getTomatoType(tokenId: string): Promise<TomatoType> {
     const contract = await this.getNFTContract();
     const result = await this.executeCall<number>(contract, 'get_tomato_type', [tokenId]);
-    return result as TomatoType;
+    return result as unknown as TomatoType;
   }
 
   /**
@@ -120,17 +120,17 @@ export class TomatoNFTService extends BaseContractService {
   /**
    * 获取用户拥有的所有NFT ID（需要遍历或使用事件）
    */
-  async getUserTokenIds(owner: string): Promise<string[]> {
-    // 注意：这个功能需要根据实际合约接口实现
-    // 可能需要通过事件日志或其他方式获取
-    const balance = await this.getBalanceOf(owner);
-    const tokenIds: string[] = [];
+  // async getUserTokenIds(owner: string): Promise<string[]> {
+  //   // 注意：这个功能需要根据实际合约接口实现
+  //   // 可能需要通过事件日志或其他方式获取
+  //   // const balance = await this.getBalanceOf(owner);
+  //   const tokenIds: string[] = [];
 
-    // 这里需要实现获取用户token ID的逻辑
-    // 可能需要调用合约的特定方法或分析事件日志
+  //   // 这里需要实现获取用户token ID的逻辑
+  //   // 可能需要调用合约的特定方法或分析事件日志
 
-    return tokenIds;
-  }
+  //   return tokenIds;
+  // }
 
   /**
    * 批量获取NFT信息
@@ -183,7 +183,7 @@ export class TomatoNFTService extends BaseContractService {
           planted_at: parseInt(metadataRaw.planted_at, 10),
           harvested_at: parseInt(metadataRaw.harvested_at, 10),
           staked_amount: metadataRaw.staked_amount.toString(),
-          tomato_type: parseInt(metadataRaw.tomato_type, 10) as TomatoType
+          tomato_type: parseInt(metadataRaw.tomato_type, 10) as unknown as TomatoType
         };
 
         tokenInfos.push({
@@ -200,32 +200,6 @@ export class TomatoNFTService extends BaseContractService {
       return [];
     }
   }
-
-  /**
-   * 监听NFT转移事件
-   */
-  async listenToTransferEvents(fromBlock: number, callback: (event: any) => void): Promise<void> {
-    // 实现事件监听逻辑
-    // 需要根据Starknet的事件监听API实现
-  }
-
-  /**
-   * 获取NFT交易历史
-   */
-  async getTokenHistory(tokenId: string): Promise<
-    Array<{
-      type: 'mint' | 'transfer';
-      from: string;
-      to: string;
-      transactionHash: string;
-      timestamp: number;
-    }>
-  > {
-    // 实现交易历史获取逻辑
-    // 需要通过事件日志分析实现
-    return [];
-  }
-
   /**
    * 验证NFT所有权
    */
@@ -259,5 +233,12 @@ export class TomatoNFTService extends BaseContractService {
       symbol
       // totalSupply和baseURI需要根据合约实际接口添加
     };
+  }
+
+  /**
+   * 获取NFT合约地址
+   */
+  getContractAddress(): string {
+    return super.getContractAddress('tomatoNFT');
   }
 }

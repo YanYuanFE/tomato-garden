@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Droplets, Clock, Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
 import { TomatoInfo, UserStats, GROWTH_STAGE_INFO, TOMATO_TYPE_INFO } from '@/services';
 
 interface GrowthStage {
@@ -60,8 +58,9 @@ const GardenTab: React.FC<GardenTabProps> = ({
     { name: 'Mature Stage', emoji: '🍅', progress: 100, duration: 'Harvestable!' }
   ];
 
+  console.log(userTomatoes, 'users');
   const activeTomato = userTomatoes.find((t) => !t.isHarvestable);
-  const harvestableTomato = userTomatoes.find((t) => t.isHarvestable);
+  const harvestableTomato = userTomatoes.find((t) => t.isHarvestable && !t.isHarvested);
 
   return (
     <div className="px-4 py-4 space-y-4">
@@ -160,8 +159,8 @@ const GardenTab: React.FC<GardenTabProps> = ({
               <h3 className="text-xl font-bold text-gray-800 pixel-font">Tomato is Ready!</h3>
               <p className="text-gray-600 pixel-font text-sm mb-4">
                 {TOMATO_TYPE_INFO[harvestableTomato?.metadata?.tomato_type]?.emoji}{' '}
-                {TOMATO_TYPE_INFO[harvestableTomato.metadata?.tomato_type]?.name} tomato is mature and ready to
-                harvest as NFT
+                {TOMATO_TYPE_INFO[harvestableTomato.metadata?.tomato_type]?.name} tomato is mature and ready to harvest
+                as NFT
               </p>
               <Button
                 onClick={handleHarvest}

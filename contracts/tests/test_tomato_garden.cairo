@@ -46,15 +46,11 @@ fn deploy_mock_strk_token() -> ContractAddress {
 // 部署 TomatoNFT 合约
 fn deploy_tomato_nft() -> ITomatoNFTDispatcher {
     let contract = declare("TomatoNFT").unwrap().contract_class();
-    let name: ByteArray = "Tomato NFT";
-    let symbol: ByteArray = "TOMATO";
     let base_uri: ByteArray = "https://api.tomato-garden.com/";
     let growth_time_per_stage: u64 = 86400; // 24小时
     let max_growth_stage: u8 = 4;
     
     let mut constructor_calldata = array![];
-    constructor_calldata.append_serde(name);
-    constructor_calldata.append_serde(symbol);
     constructor_calldata.append_serde(base_uri);
     constructor_calldata.append_serde(OWNER());
     constructor_calldata.append_serde(OWNER()); // 初始授权铸造者设为 OWNER
@@ -115,7 +111,7 @@ fn test_deploy_nft() {
     // 验证 ERC721 基本信息
     let name = erc721_metadata.name();
     let symbol = erc721_metadata.symbol();
-    assert(name == "Tomato NFT", 'Wrong NFT name');
+    assert(name == "Tomato Garden NFT", 'Wrong NFT name');
     assert(symbol == "TOMATO", 'Wrong NFT symbol');
 }
 

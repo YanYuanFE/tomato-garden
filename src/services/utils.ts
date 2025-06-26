@@ -177,6 +177,108 @@ export function generateTokenURI(tomatoType: TomatoType, baseUri: string): strin
 }
 
 /**
+ * 将IPFS URI转换为可访问的HTTP URL
+ */
+export function ipfsToHttp(ipfsUri: string, gateway: string = 'azure-judicial-grasshopper-821.mypinata.cloud'): string {
+  if (!ipfsUri.startsWith('ipfs://')) {
+    return ipfsUri; // 如果不是IPFS URI，直接返回
+  }
+  
+  const hash = ipfsUri.replace('ipfs://', '');
+  return `https://${gateway}/ipfs/${hash}`;
+}
+
+/**
+ * 获取NFT元数据
+ */
+export async function fetchNFTMetadata(tokenUri: string): Promise<any> {
+  try {
+    const httpUrl = ipfsToHttp(tokenUri);
+    const response = await fetch(httpUrl);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const metadata = await response.json();
+    return metadata;
+  } catch (error) {
+    console.error('Failed to fetch NFT metadata:', error);
+    return null;
+  }
+}
+
+/**
+ * 增强版获取NFT元数据，支持多个网关重试
+ */
+export async function fetchNFTMetadataWithRetry(tokenUri: string): Promise<any> {
+  if (!tokenUri.startsWith('ipfs://')) {
+    // 如果不是IPFS URI，直接尝试获取
+    try {
+      const response = await fetch(tokenUri);
+      if (response.ok) {
+        return await response.json();
+      }
+    } catch {
+      // 忽略错误，继续下面的逻辑
+    }
+    return null;
+  }
+
+  const hash = tokenUri.replace('ipfs://', '');
+  const gateways = [
+    'azure-judicial-grasshopper-821.mypinata.cloud',
+    'ipfs.io',
+    'gateway.pinata.cloud',
+    'cloudflare-ipfs.com'
+  ];
+
+  for (const gateway of gateways) {
+    try {
+      const url = `https://${gateway}/ipfs/${hash}`;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
+
+      const response = await fetch(url, {
+        signal: controller.signal,
+        headers: {
+          'Accept': 'application/json',
+        }
+      });
+
+      clearTimeout(timeoutId);
+
+      if (response.ok) {
+        const metadata = await response.json();
+        console.log(`Successfully fetched metadata from ${gateway}`);
+        return metadata;
+      }
+    } catch (error) {
+      console.warn(`Failed to fetch from gateway ${gateway}:`, error);
+      // 继续尝试下一个网关
+    }
+  }
+
+  console.error('All gateways failed for', tokenUri);
+  return null;
+}
+
+/**
+ * 从NFT元数据中获取图片URL
+ */
+export function getImageFromMetadata(metadata: any): string {
+  if (!metadata) return '';
+  
+  // 尝试不同的图片字段名
+  const imageField = metadata.image || metadata.image_url || metadata.imageUrl || metadata.picture;
+  
+  if (!imageField) return '';
+  
+  // 如果是IPFS URI，转换为HTTP URL
+  return ipfsToHttp(imageField);
+}
+
+/**
  * 解析合约地址（确保格式正确）
  */
 export function parseContractAddress(address: string): string {
