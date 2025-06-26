@@ -1,0 +1,39 @@
+{
+  "mainnet": {
+    "name": "Starknet Mainnet",
+    "rpc_url": "https://starknet-mainnet.public.blastapi.io",
+    "chain_id": "0x534e5f4d41494e",
+    "explorer_url": "https://starkscan.co",
+    "strk_token_address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+    "currency": "STRK",
+    "block_time": 30,
+    "confirmation_blocks": 1
+  },
+  "sepolia": {
+    "name": "Starknet Sepolia Testnet",
+    "rpc_url": "https://starknet-sepolia.public.blastapi.io",
+    "chain_id": "0x534e5f5345504f4c4941",
+    "explorer_url": "https://sepolia.starkscan.co",
+    "strk_token_address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+    "currency": "STRK",
+    "block_time": 30,
+    "confirmation_blocks": 1,
+    "faucet_url": "https://starknet-faucet.vercel.app"
+  },
+  "devnet": {
+    "name": "Local Devnet",
+    "rpc_url": "http://localhost:5050",
+    "chain_id": "0x534e5f474f45524c49",
+    "explorer_url": "http://localhost:4000",
+    "strk_token_address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+    "currency": "STRK",
+    "block_time": 3,
+    "confirmation_blocks": 0,
+    "accounts": {
+      "predeployed_account_0": {
+        "address": "0x64b48806902a367c8598f4f95c305e8c1a1acba5f082d294a43793113115691",
+        "private_key": "0x71d7bb07b9a64f6f78ac4c816aff4da9"
+      }
+    }
+  }
+}

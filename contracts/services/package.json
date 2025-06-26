@@ -1,0 +1,31 @@
+{
+  "name": "tomato-garden-services",
+  "version": "1.0.0",
+  "description": "Tomato Garden 前端服务层",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "cli": "npx ts-node --esm cli-tool.ts",
+    "examples": "npx ts-node --esm examples-updated.ts",
+    "build": "tsc",
+    "dev": "ts-node --esm index.ts"
+  },
+  "dependencies": {
+    "starknet": "^6.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "commander": "^11.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "starknet",
+    "nft",
+    "defi",
+    "tomato",
+    "garden"
+  ],
+  "author": "Tomato Garden Team",
+  "license": "MIT"
+}

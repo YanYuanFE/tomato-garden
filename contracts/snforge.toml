@@ -1,0 +1,14 @@
+[snforge]
+# See more keys and their definitions at https://foundry-rs.github.io/starknet-foundry/appendix/snforge-toml.html
+
+# Test configuration
+[test]
+# Exit first on failed test
+exit_first = false
+
+# Fuzzer configuration
+[fuzz]
+# Number of runs for each fuzz test
+runs = 256
+# Seed for the fuzzer
+seed = 12345

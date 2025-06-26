@@ -1,0 +1,32 @@
+[sncast.default]
+# 默认配置
+url = "sepolia"
+accounts-file = "~/.starknet_accounts/starknet_open_zeppelin_accounts.json"
+
+[sncast.deployer]
+# 部署者账户配置
+account = "deployer"
+accounts-file = "~/.starknet_accounts/deployer_account.json"
+keystore = "~/.starknet_keystore/deployer"
+url = "sepolia"
+
+[sncast.mainnet_deployer]
+# 主网部署者账户配置
+account = "mainnet_deployer"
+accounts-file = "~/.starknet_accounts/mainnet_account.json" 
+keystore = "~/.starknet_keystore/mainnet"
+url = "mainnet"
+
+# 网络配置
+[networks.sepolia]
+url = "https://starknet-sepolia.public.blastapi.io"
+
+[networks.mainnet]
+url = "https://starknet-mainnet.public.blastapi.io"
+
+[networks.local]
+url = "http://localhost:5050"
+
+# 合约配置
+[[tool.sncast.artifacts]]
+# 这里可以配置合约编译输出路径等设置

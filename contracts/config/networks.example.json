@@ -1,0 +1,174 @@
+{
+  "networks": {
+    "mainnet": {
+      "name": "Starknet Mainnet",
+      "strk_token_address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+      "min_stake_amount": "1000000000000000000",
+      "explorer_url": "https://starkscan.co",
+      "rpc_url": "https://starknet-mainnet.public.blastapi.io"
+    },
+    "sepolia": {
+      "name": "Starknet Sepolia Testnet",
+      "strk_token_address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+      "min_stake_amount": "100000000000000000",
+      "explorer_url": "https://sepolia.starkscan.co",
+      "rpc_url": "https://starknet-sepolia.public.blastapi.io"
+    }
+  },
+  "deployment_info": {
+    "description": "部署后的合约信息将保存在 deployments/ 目录下",
+    "format": {
+      "network": "网络名称",
+      "contract_address": "合约地址",
+      "class_hash": "类哈希",
+      "strk_token_address": "STRK代币地址",
+      "min_stake_amount": "最小质押金额 (wei)",
+      "owner_address": "合约所有者地址",
+      "deployed_at": "部署时间 (ISO 8601)"
+    }
+  },
+  "constants": {
+    "growth_time_per_stage": 86400,
+    "growth_time_per_stage_description": "每个成长阶段需要的时间 (秒), 86400 = 24小时",
+    "max_growth_stage": 4,
+    "max_growth_stage_description": "最大成长阶段, 0-4 共5个阶段",
+    "strk_decimals": 18,
+    "strk_decimals_description": "STRK代币精度, 1 STRK = 10^18 wei"
+  },
+  "growth_stages": {
+    "0": {
+      "name": "种子期",
+      "emoji": "🌱",
+      "description": "番茄刚刚种植，还是一颗种子"
+    },
+    "1": {
+      "name": "幼苗期",
+      "emoji": "🌿",
+      "description": "种子发芽，长出了小幼苗"
+    },
+    "2": {
+      "name": "成长期",
+      "emoji": "🍃",
+      "description": "幼苗茁壮成长，叶子越来越多"
+    },
+    "3": {
+      "name": "开花期",
+      "emoji": "🌺",
+      "description": "植物开始开花，即将结果"
+    },
+    "4": {
+      "name": "成熟期",
+      "emoji": "🍅",
+      "description": "番茄完全成熟，可以收获为NFT"
+    }
+  },
+  "tomato_types": {
+    "0": {
+      "name": "Normal",
+      "chinese_name": "普通",
+      "emoji": "🍅",
+      "rarity": "普通",
+      "description": "默认番茄类型，可以通过浇水变异为其他类型",
+      "mutation_possible": true
+    },
+    "1": {
+      "name": "Yellow",
+      "chinese_name": "黄色",
+      "emoji": "🟡",
+      "rarity": "不常见",
+      "description": "黄色变异番茄，散发着温暖的金色光芒",
+      "mutation_possible": false
+    },
+    "2": {
+      "name": "Purple",
+      "chinese_name": "紫色",
+      "emoji": "🟣",
+      "rarity": "不常见",
+      "description": "紫色变异番茄，神秘而优雅",
+      "mutation_possible": false
+    },
+    "3": {
+      "name": "Flame",
+      "chinese_name": "火焰",
+      "emoji": "🔥",
+      "rarity": "稀有",
+      "description": "火焰番茄，燃烧着炽热的能量",
+      "mutation_possible": false
+    },
+    "4": {
+      "name": "Ice",
+      "chinese_name": "冰霜",
+      "emoji": "❄️",
+      "rarity": "史诗",
+      "description": "冰霜番茄，散发着冰冷的寒气",
+      "mutation_possible": false
+    },
+    "5": {
+      "name": "Rainbow",
+      "chinese_name": "彩虹",
+      "emoji": "🌈",
+      "rarity": "传说",
+      "description": "彩虹番茄，拥有七彩斑斓的色彩，极其罕见",
+      "mutation_possible": false
+    }
+  },
+  "mutation_system": {
+    "mutation_rate": 0.05,
+    "mutation_rate_description": "每次浇水有5%的概率触发变异",
+    "mutation_requirements": "只有Normal类型的番茄可以变异",
+    "mutation_trigger": "浇水时触发随机变异检测",
+    "mutation_permanence": "变异后的番茄类型永久保持，收获后NFT会保留类型信息"
+  },
+  "usage_examples": {
+    "deploy": {
+      "command": "./scripts/deploy.sh sepolia 0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d 1000000000000000000 0x123...",
+      "description": "部署合约到Sepolia测试网"
+    },
+    "approve_strk": {
+      "command": "./scripts/interact.sh approve sepolia 0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d 0x合约地址 2000000000000000000",
+      "description": "授权2 STRK代币给合约"
+    },
+    "plant_tomato": {
+      "command": "./scripts/interact.sh plant sepolia 0x合约地址 2000000000000000000",
+      "description": "质押2 STRK种植番茄"
+    },
+    "water_tomato": {
+      "command": "./scripts/interact.sh water sepolia 0x合约地址 1",
+      "description": "为番茄ID为1的番茄浇水"
+    },
+    "check_stage": {
+      "command": "./scripts/interact.sh stage sepolia 0x合约地址 1",
+      "description": "查看番茄ID为1的成长阶段"
+    },
+    "harvest_tomato": {
+      "command": "./scripts/interact.sh harvest sepolia 0x合约地址 1",
+      "description": "收获番茄ID为1的番茄为NFT"
+    },
+    "list_tomatoes": {
+      "command": "./scripts/interact.sh list sepolia 0x合约地址 0x用户地址",
+      "description": "查看用户拥有的所有番茄"
+    },
+    "check_type": {
+      "command": "./scripts/interact.sh type sepolia 0x合约地址 1",
+      "description": "查看番茄ID为1的类型"
+    },
+    "check_metadata": {
+      "command": "./scripts/interact.sh metadata sepolia 0xNFT合约地址 1",
+      "description": "查看番茄ID为1的完整元数据"
+    },
+    "mutation_stats": {
+      "command": "./scripts/stats.sh sepolia 0x合约地址 0x用户地址",
+      "description": "查看用户的番茄变异统计"
+    }
+  },
+  "tips": {
+    "watering": "浇水可以加速成长（3倍速），每次浇水都有5%概率触发变异！",
+    "harvesting": "只有达到第4阶段（成熟期）的番茄才能收获为NFT",
+    "staking": "质押的STRK代币会锁定在合约中，收获时不会返还",
+    "nft": "收获的NFT会直接铸造到您的账户，可以在支持ERC721的钱包中查看",
+    "gas": "所有交易都需要支付gas费用，请确保账户有足够的ETH",
+    "mutation": "只有Normal类型的番茄可以变异，变异后的番茄类型永久保持",
+    "rarity": "变异番茄越稀有越有收藏价值：Normal < Yellow/Purple < Flame < Ice < Rainbow",
+    "strategy": "多种植Normal番茄并频繁浇水可以增加获得稀有变异的机会"
+  }
+}

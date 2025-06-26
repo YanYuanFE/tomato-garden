@@ -1,0 +1,19 @@
+[package]
+name = "tomato_garden"
+version = "0.1.0"
+edition = "2024_07"
+
+[dependencies]
+starknet = "2.11.4"
+openzeppelin = "2.0.0"
+
+[dev-dependencies]
+cairo_test = "2.11.4"
+snforge_std = "0.43.1"
+
+[[target.starknet-contract]]
+sierra = true
+casm = true
+
+[tool.snforge]
+# See more keys and their definitions at https://foundry-rs.github.io/starknet-foundry/appendix/snforge-toml.html
