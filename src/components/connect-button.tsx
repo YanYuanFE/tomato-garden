@@ -11,16 +11,21 @@ export const ConnectButton = () => {
   const { connect, connectors } = useConnect();
 
   const { starknetkitConnectModal } = useStarknetkitConnectModal({
-    connectors: connectors
+    connectors: connectors as any
   });
 
   async function connectWallet() {
-    const { connector } = await starknetkitConnectModal();
-    if (!connector) {
-      return;
-    }
+    try {
+      const { connector } = await starknetkitConnectModal();
+      if (!connector) {
+        return;
+      }
 
-    await connect({ connector });
+      await connect({ connector });
+    } catch (error) {
+      console.error('Wallet connection failed:', error);
+      // Optionally show error message to user
+    }
   }
 
   return (

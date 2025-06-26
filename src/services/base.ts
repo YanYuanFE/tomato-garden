@@ -98,7 +98,6 @@ export class BaseContractService {
   protected async executeCall<T = any>(contract: Contract, functionName: string, calldata?: any[]): Promise<T> {
     try {
       const result = await contract.call(functionName, calldata || []);
-      console.log(result, 'result ooo');
       return result as T;
     } catch (error) {
       console.error(`Call ${functionName} failed:`, error);
@@ -210,7 +209,6 @@ export class BaseContractService {
       calldata?: any[];
     }>
   ): Promise<T[]> {
-    console.log(calls, 'calls');
     const promises = calls.map((call) => this.executeCall(call.contract, call.functionName, call.calldata));
 
     return Promise.all(promises);

@@ -38,12 +38,11 @@ const Index = () => {
 
   // Initialize service when account is connected
   useEffect(() => {
-    console.log(isConnected, account, address, 'isConnected');
     if (isConnected && account && address) {
       const initService = async () => {
         try {
           const service = new TomatoGardenService('sepolia');
-          console.log(service, 'ss');
+
           await service.connectAccount(account as any);
           serviceRef.current = service;
           setServiceReady(true);
@@ -102,11 +101,14 @@ const Index = () => {
         .filter(Boolean) as any[];
       setNftCollection(nfts);
 
+      console.log(tomatoes, 'tomatoes');
       // Update planting state based on tomatoes
       if (tomatoes.length > 0) {
-        const activeTomato = tomatoes.find((t) => !t.isHarvestable);
+        const activeTomato = tomatoes.find((t) => !t.isHarvested);
+
         if (activeTomato) {
           setPlantingState('growing');
+          console.log(activeTomato, 'ac');
           setCurrentStage(activeTomato.currentGrowthStage);
           setProgress((activeTomato.currentGrowthStage / 4) * 100);
           setLastWatered(new Date(activeTomato.lastWatered * 1000));
@@ -150,9 +152,10 @@ const Index = () => {
       return;
     }
 
+    let toastId;
     try {
       setLoading(true);
-      toast.loading('Planting tomato...');
+      toastId = toast.loading('Planting tomato...');
 
       const result = await serviceRef.current.plantTomato(stakeAmount);
 
@@ -167,7 +170,7 @@ const Index = () => {
       toast.error('Error occurred while planting tomato');
     } finally {
       setLoading(false);
-      toast.dismiss();
+      toast.dismiss(toastId);
     }
   };
 
@@ -254,6 +257,8 @@ const Index = () => {
       toast.dismiss(toastId);
     }
   };
+
+  console.log(currentStage, plantingState, 'stage');
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-400 via-green-300 to-yellow-200 relative overflow-hidden">

@@ -5,7 +5,6 @@
 
 import { TomatoNFTService } from './TomatoNFTService';
 import { TomatoStakingService } from './TomatoStakingService';
-import { TOMATO_TYPE_INFO } from './types';
 
 export interface LeaderboardEntry {
   address: string;
@@ -132,9 +131,9 @@ export class LeaderboardService {
             const staked = parseFloat(metadata.staked_amount || '0');
             totalStaked = (parseFloat(totalStaked) + staked).toString();
 
-            // 统计稀有番茄
-            const typeInfo = TOMATO_TYPE_INFO[metadata.tomato_type as keyof typeof TOMATO_TYPE_INFO];
-            if (typeInfo && (typeInfo.rarity === '稀有' || typeInfo.rarity === '史诗' || typeInfo.rarity === '传说')) {
+            // 统计稀有番茄 (直接检查类型而不依赖TOMATO_TYPE_INFO)
+            const tomatoType = metadata.tomato_type;
+            if (tomatoType === 'Flame' || tomatoType === 'Ice' || tomatoType === 'Rainbow') {
               rareCount++;
             }
           }

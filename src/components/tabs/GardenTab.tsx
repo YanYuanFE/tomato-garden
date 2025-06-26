@@ -50,6 +50,7 @@ const GardenTab: React.FC<GardenTabProps> = ({
   loading,
   serviceReady
 }) => {
+  console.log(userStats, 'stats');
   const growthStages: GrowthStage[] = [
     { name: 'Seed Stage', emoji: '🌱', progress: 0, duration: '1h' },
     { name: 'Seedling Stage', emoji: '🌿', progress: 25, duration: '1h' },
@@ -187,13 +188,13 @@ const GardenTab: React.FC<GardenTabProps> = ({
           <CardTitle className="text-lg text-gray-800 pixel-font">Growth Stages</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex justify-between items-center space-x-2">
+          <div className="flex justify-between items-center space-x-2 flex-wrap">
             {growthStages.map((stage, index) => (
               <div key={index} className="flex flex-col items-center flex-1">
                 <div className={`text-2xl mb-1 ${index <= currentStage ? 'opacity-100' : 'opacity-30'}`}>
                   {stage.emoji}
                 </div>
-                <h4 className="font-bold text-xs text-gray-800 pixel-font text-center">{stage.name}</h4>
+                <h4 className="font-semibold text-xs text-gray-800 pixel-font text-center">{stage.name}</h4>
                 <p className="text-xs text-gray-600 pixel-font">{stage.duration}</p>
                 <div className="w-full bg-gray-300 h-1 mt-1 border border-gray-500">
                   <div

@@ -17,7 +17,6 @@ import {
   CollectionStats,
   NetworkStatus
 } from './types';
-import { calculateMutationRate, calculateCollectionScore, getCollectionLevel, formatSTRK, weiToSTRK } from './utils';
 
 export class TomatoGardenService {
   private nftService: TomatoNFTService;
@@ -103,7 +102,6 @@ export class TomatoGardenService {
    */
   async getUserTomatoInfos(userAddress: string): Promise<TomatoInfo[]> {
     const tomatoIds = await this.stakingService.getUserTomatoIds(userAddress);
-    console.log(tomatoIds, 'ids');
     const promises = tomatoIds.map((id) => this.getTomatoInfo(id));
     return Promise.all(promises);
   }
@@ -179,7 +177,6 @@ export class TomatoGardenService {
   async getUserStats(userAddress: string): Promise<UserStats> {
     const tomatoes = await this.getUserTomatoInfos(userAddress);
 
-    console.log(tomatoes, 'list');
     const stats: UserStats = {
       totalTomatoes: tomatoes.length,
       harvestableTomatoes: 0,
@@ -222,13 +219,27 @@ export class TomatoGardenService {
 
       // 总质押金额
       if (tomato.metadata?.staked_amount) {
-        totalStaked += weiToSTRK(tomato.metadata.staked_amount);
+        totalStaked += parseFloat(tomato.metadata.staked_amount) / Math.pow(10, 18);
+        console.log(totalStaked, 'staked');
       }
     }
 
-    stats.totalStaked = formatSTRK(totalStaked);
-    stats.mutationRate = calculateMutationRate(stats.totalTomatoes, stats.tomatoesByType);
-    stats.collectionValue = calculateCollectionScore(stats.tomatoesByType);
+    stats.totalStaked = totalStaked;
+    
+    // 计算变异率：稀有番茄数量 / 总番茄数量
+    const rareTomatoes = stats.tomatoesByType[TomatoType.Flame] + 
+                        stats.tomatoesByType[TomatoType.Ice] + 
+                        stats.tomatoesByType[TomatoType.Rainbow];
+    stats.mutationRate = stats.totalTomatoes > 0 ? rareTomatoes / stats.totalTomatoes : 0;
+    
+    // 计算收藏价值：根据稀有度加权
+    stats.collectionValue = 
+      stats.tomatoesByType[TomatoType.Normal] * 1 +
+      stats.tomatoesByType[TomatoType.Yellow] * 2 +
+      stats.tomatoesByType[TomatoType.Purple] * 2 +
+      stats.tomatoesByType[TomatoType.Flame] * 5 +
+      stats.tomatoesByType[TomatoType.Ice] * 10 +
+      stats.tomatoesByType[TomatoType.Rainbow] * 20;
 
     return stats;
   }
@@ -319,7 +330,15 @@ export class TomatoGardenService {
    */
   async getUserCollectionLevel(userAddress: string): Promise<string> {
     const userStats = await this.getUserStats(userAddress);
-    return getCollectionLevel(userStats.collectionValue);
+    
+    // 内联收藏等级计算
+    const value = userStats.collectionValue;
+    if (value >= 100) return 'Master Collector';
+    if (value >= 50) return 'Expert Collector';
+    if (value >= 20) return 'Advanced Collector';
+    if (value >= 10) return 'Collector';
+    if (value >= 5) return 'Beginner Collector';
+    return 'New Farmer';
   }
 
   /**

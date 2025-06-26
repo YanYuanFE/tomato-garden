@@ -112,7 +112,7 @@ const NFTTab: React.FC<NFTTabProps> = ({ userTomatoes, userStats, loading }) => 
                       tokenUri={tomato.tokenUri}
                       fallbackEmoji={typeInfo.emoji}
                       name={`${typeInfo.name} Tomato #${tomato.id}`}
-                      className="w-full h-24 object-cover mb-2 rounded"
+                      className="w-full h-auto object-cover mb-2 rounded"
                     />
                     <h4 className="text-sm font-bold text-gray-800 pixel-font">
                       {typeInfo.name} Tomato #{tomato.id}

@@ -187,7 +187,6 @@ export class TomatoStakingService extends BaseContractService {
       // 获取番茄类型用于结果
       const tomatoType = await this.getTomatoType(tomatoId);
 
-      console.log(tomatoId);
       const result = await this.executeInvoke(contract, 'harvest_tomato', [tomatoId]);
 
       if (result.success) {

@@ -1,8 +1,8 @@
 /**
- * Tomato Garden 类型定义
+ * Tomato Garden Type Definitions
  */
 
-// 番茄类型枚举
+// Tomato type enumeration
 export enum TomatoType {
   Normal = 'Normal',
   Yellow = 'Yellow',
@@ -12,7 +12,7 @@ export enum TomatoType {
   Rainbow = 'Rainbow'
 }
 
-// 番茄类型信息
+// Tomato type information
 export interface TomatoTypeInfo {
   name: string;
   chineseName: string;
@@ -25,55 +25,55 @@ export interface TomatoTypeInfo {
 export const TOMATO_TYPE_INFO: Record<TomatoType, TomatoTypeInfo> = {
   [TomatoType.Normal]: {
     name: 'Normal',
-    chineseName: '普通',
+    chineseName: 'Common',
     emoji: '🍅',
-    rarity: '普通',
-    description: '默认番茄类型，可以通过浇水变异为其他类型',
+    rarity: 'Common',
+    description: 'Default tomato type, can mutate into other types through watering',
     mutationPossible: true
   },
   [TomatoType.Yellow]: {
     name: 'Yellow',
-    chineseName: '黄色',
+    chineseName: 'Yellow',
     emoji: '🟡',
-    rarity: '不常见',
-    description: '黄色变异番茄，散发着温暖的金色光芒',
+    rarity: 'Uncommon',
+    description: 'Yellow mutant tomato, radiating warm golden light',
     mutationPossible: false
   },
   [TomatoType.Purple]: {
     name: 'Purple',
-    chineseName: '紫色',
+    chineseName: 'Purple',
     emoji: '🟣',
-    rarity: '不常见',
-    description: '紫色变异番茄，神秘而优雅',
+    rarity: 'Uncommon',
+    description: 'Purple mutant tomato, mysterious and elegant',
     mutationPossible: false
   },
   [TomatoType.Flame]: {
     name: 'Flame',
-    chineseName: '火焰',
+    chineseName: 'Flame',
     emoji: '🔥',
-    rarity: '稀有',
-    description: '火焰番茄，燃烧着炽热的能量',
+    rarity: 'Rare',
+    description: 'Flame tomato, burning with intense energy',
     mutationPossible: false
   },
   [TomatoType.Ice]: {
     name: 'Ice',
-    chineseName: '冰霜',
+    chineseName: 'Frost',
     emoji: '❄️',
-    rarity: '史诗',
-    description: '冰霜番茄，散发着冰冷的寒气',
+    rarity: 'Epic',
+    description: 'Frost tomato, emanating icy coldness',
     mutationPossible: false
   },
   [TomatoType.Rainbow]: {
     name: 'Rainbow',
-    chineseName: '彩虹',
+    chineseName: 'Rainbow',
     emoji: '🌈',
-    rarity: '传说',
-    description: '彩虹番茄，拥有七彩斑斓的色彩，极其罕见',
+    rarity: 'Legendary',
+    description: 'Rainbow tomato, with colorful brilliance, extremely rare',
     mutationPossible: false
   }
 };
 
-// 成长阶段枚举
+// Growth stage enumeration
 export enum GrowthStage {
   Seed = 0,
   Seedling = 1,
@@ -82,7 +82,7 @@ export enum GrowthStage {
   Mature = 4
 }
 
-// 成长阶段信息
+// Growth stage information
 export interface GrowthStageInfo {
   name: string;
   chineseName: string;
@@ -94,42 +94,42 @@ export interface GrowthStageInfo {
 export const GROWTH_STAGE_INFO: Record<GrowthStage, GrowthStageInfo> = {
   [GrowthStage.Seed]: {
     name: 'Seed',
-    chineseName: '种子期',
+    chineseName: 'Seed Stage',
     emoji: '🌱',
-    description: '番茄刚刚种植，还是一颗种子',
+    description: 'Tomato just planted, still a seed',
     harvestable: false
   },
   [GrowthStage.Seedling]: {
     name: 'Seedling',
-    chineseName: '幼苗期',
+    chineseName: 'Seedling Stage',
     emoji: '🌿',
-    description: '种子发芽，长出了小幼苗',
+    description: 'Seed has sprouted, growing small seedlings',
     harvestable: false
   },
   [GrowthStage.Growing]: {
     name: 'Growing',
-    chineseName: '成长期',
+    chineseName: 'Growing Stage',
     emoji: '🍃',
-    description: '幼苗茁壮成长，叶子越来越多',
+    description: 'Seedling growing vigorously, more and more leaves',
     harvestable: false
   },
   [GrowthStage.Flowering]: {
     name: 'Flowering',
-    chineseName: '开花期',
+    chineseName: 'Flowering Stage',
     emoji: '🌺',
-    description: '植物开始开花，即将结果',
+    description: 'Plant starts flowering, about to bear fruit',
     harvestable: false
   },
   [GrowthStage.Mature]: {
     name: 'Mature',
-    chineseName: '成熟期',
+    chineseName: 'Mature Stage',
     emoji: '🍅',
-    description: '番茄完全成熟，可以收获为NFT',
+    description: 'Tomato fully mature, can be harvested as NFT',
     harvestable: true
   }
 };
 
-// 番茄元数据
+// Tomato metadata
 export interface TomatoMetadata {
   growth_stage: number;
   planted_at: number;
@@ -138,7 +138,7 @@ export interface TomatoMetadata {
   tomato_type: TomatoType;
 }
 
-// 完整的番茄信息
+// Complete tomato information
 export interface TomatoInfo {
   id: string;
   owner: string;
@@ -147,11 +147,11 @@ export interface TomatoInfo {
   lastWatered: number;
   tokenUri: string;
   isHarvestable: boolean;
-  isHarvested: boolean; // 新增：是否已收获（是否已铸造NFT）
+  isHarvested: boolean; // New: whether harvested (whether NFT has been minted)
   timeToNextStage?: number;
 }
 
-// 用户统计信息
+// User statistics
 export interface UserStats {
   totalTomatoes: number;
   harvestableTomatoes: number;
@@ -159,11 +159,11 @@ export interface UserStats {
   tomatoesByStage: Record<GrowthStage, number>;
   mutationRate: number;
   collectionValue: number;
-  totalStaked: string;
+  totalStaked: string | number;
   totalRewards: string;
 }
 
-// 交易结果
+// Transaction result
 export interface TransactionResult {
   success: boolean;
   transactionHash?: string;
@@ -171,27 +171,27 @@ export interface TransactionResult {
   data?: any;
 }
 
-// 水滴结果（包含变异检测）
+// Watering result (including mutation detection)
 export interface WateringResult extends TransactionResult {
   mutated?: boolean;
   oldType?: TomatoType;
   newType?: TomatoType;
 }
 
-// 收获结果
+// Harvest result
 export interface HarvestResult extends TransactionResult {
   tokenId?: string;
   reward?: string;
   tomatoType?: TomatoType;
 }
 
-// 种植结果
+// Plant result
 export interface PlantResult extends TransactionResult {
   tokenId?: string;
   stakedAmount?: string;
 }
 
-// 网络状态
+// Network status
 export interface NetworkStatus {
   connected: boolean;
   network?: string;
@@ -199,7 +199,7 @@ export interface NetworkStatus {
   balance?: string;
 }
 
-// 合约事件
+// Contract event
 export interface ContractEvent {
   eventName: string;
   data: any;
@@ -208,7 +208,7 @@ export interface ContractEvent {
   timestamp: number;
 }
 
-// 番茄收集统计
+// Tomato collection statistics
 export interface CollectionStats {
   totalTypes: number;
   collectedTypes: number;
