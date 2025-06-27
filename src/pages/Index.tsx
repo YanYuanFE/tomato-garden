@@ -53,7 +53,7 @@ const Index = () => {
           await loadUserData();
         } catch (error) {
           console.error('Failed to initialize service:', error);
-          toast.error('服务初始化失败');
+          toast.error('Failed to initialize service');
         }
       };
 
@@ -132,7 +132,7 @@ const Index = () => {
       }
     } catch (error) {
       console.error('Failed to load user data:', error);
-      toast.error('加载用户数据失败');
+      toast.error('Failed to load user data');
     } finally {
       setLoading(false);
     }
