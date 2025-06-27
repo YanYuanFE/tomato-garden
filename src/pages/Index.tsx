@@ -195,13 +195,14 @@ const Index = () => {
       const result = await serviceRef.current.waterTomato(activeTomato.id);
       toast.dismiss(toastId);
       if (result.success) {
-        if (result.mutated) {
-          const oldType = TOMATO_TYPE_INFO[result.oldType!];
-          const newType = TOMATO_TYPE_INFO[result.newType!];
-          toast.success(`💧 Watering successful! ${oldType.emoji} → ${newType.emoji} Mutation occurred!`);
-        } else {
-          toast.success('💧 Watering successful! Growth accelerated...');
-        }
+        // if (result.mutated) {
+        //   const oldType = TOMATO_TYPE_INFO[result.oldType!];
+        //   const newType = TOMATO_TYPE_INFO[result.newType!];
+        //   toast.success(`💧 Watering successful! ${oldType.emoji} → ${newType.emoji} Mutation occurred!`);
+        // } else {
+        //   toast.success('💧 Watering successful! Growth accelerated...');
+        // }
+        toast.success('💧 Watering successful! Growth accelerated...');
         await loadUserData();
       } else {
         toast.error(`Watering failed: ${result.error}`);
