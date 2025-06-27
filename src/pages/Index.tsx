@@ -2,9 +2,11 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { ConnectButton } from '@/components/connect-button';
 import { GardenTab, NFTTab, LeaderboardTab, TasksTab, BottomNavigation } from '@/components/tabs';
+import { NetworkSwitchModal } from '@/components/NetworkSwitchModal';
 import { toast } from 'sonner';
 import { useAccount } from '@starknet-react/core';
 import { TomatoGardenService, TomatoInfo, UserStats, TOMATO_TYPE_INFO } from '@/services';
+import { constants } from 'starknet';
 
 interface NFT {
   id: string;
@@ -259,6 +261,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-400 via-green-300 to-yellow-200 relative overflow-hidden">
+      {/* Network Switch Modal */}
+      <NetworkSwitchModal targetChainId={constants.StarknetChainId.SN_SEPOLIA} />
       {/* Pixel Art Background Elements */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
         <div
