@@ -161,7 +161,7 @@ const Index = () => {
       toast.dismiss(toastId);
       console.log(result, 'res');
       if (result.success) {
-        toast.success(`🌱 Planting successful! Tomato ID: ${result.tokenId}`);
+        toast.success(`🌱 Planting successful! `);
         await loadUserData();
       } else {
         toast.error(`Planting failed: ${result.error}`);
@@ -238,10 +238,11 @@ const Index = () => {
       toast.dismiss(toastId);
       console.log(result, 'res');
       if (result.success) {
-        const tomatoType = TOMATO_TYPE_INFO[result.tomatoType!];
-        if (tomatoType) {
-          toast.success(`🍅 Harvest successful! Got ${tomatoType.emoji} ${tomatoType.name} Tomato NFT`);
-        }
+        toast.success(`🍅 Harvest successful! Got Tomato NFT`);
+        // const tomatoType = TOMATO_TYPE_INFO[result.tomatoType!];
+        // if (tomatoType) {
+        //   toast.success(`🍅 Harvest successful! Got ${tomatoType.emoji} ${tomatoType.name} Tomato NFT`);
+        // }
         await loadUserData();
       } else {
         toast.error(`Harvest failed: ${result.error}`);
@@ -280,7 +281,7 @@ const Index = () => {
           <div className="flex items-center space-x-2">
             <div className="text-2xl pixel-font">🍅</div>
             <div>
-              <h1 className="text-lg font-bold text-white pixel-font">Tomato Farm</h1>
+              <h1 className="text-lg font-bold text-white pixel-font">Tomato Garden</h1>
               <p className="text-xs text-green-100 pixel-font">Stake • Plant • Harvest</p>
             </div>
           </div>
