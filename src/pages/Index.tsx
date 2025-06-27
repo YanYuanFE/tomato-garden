@@ -152,13 +152,14 @@ const Index = () => {
       return;
     }
 
-    let toastId;
     try {
       setLoading(true);
-      toastId = toast.loading('Planting tomato...');
+      const toastId = toast.loading('Planting tomato...');
 
       const result = await serviceRef.current.plantTomato(stakeAmount);
 
+      toast.dismiss(toastId);
+      console.log(result, 'res');
       if (result.success) {
         toast.success(`🌱 Planting successful! Tomato ID: ${result.tokenId}`);
         await loadUserData();
@@ -170,7 +171,6 @@ const Index = () => {
       toast.error('Error occurred while planting tomato');
     } finally {
       setLoading(false);
-      toast.dismiss(toastId);
     }
   };
 
@@ -188,15 +188,12 @@ const Index = () => {
       return;
     }
 
-    console.log(activeTomato, 'ac');
-
-    let toastId;
     try {
       setLoading(true);
-      toastId = toast.loading('Watering...');
+      const toastId = toast.loading('Watering...');
 
       const result = await serviceRef.current.waterTomato(activeTomato.id);
-
+      toast.dismiss(toastId);
       if (result.success) {
         if (result.mutated) {
           const oldType = TOMATO_TYPE_INFO[result.oldType!];
@@ -214,8 +211,6 @@ const Index = () => {
       toast.error('Error occurred while watering');
     } finally {
       setLoading(false);
-      console.log(toastId, 'tid');
-      toast.dismiss(toastId);
     }
   };
 
@@ -233,13 +228,14 @@ const Index = () => {
       return;
     }
 
-    let toastId;
     try {
       setLoading(true);
-      toastId = toast.loading('Harvesting tomato...');
+      const toastId = toast.loading('Harvesting tomato...');
 
       const result = await serviceRef.current.harvestTomato(harvestableTomato.id);
 
+      toast.dismiss(toastId);
+      console.log(result, 'res');
       if (result.success) {
         const tomatoType = TOMATO_TYPE_INFO[result.tomatoType!];
         if (tomatoType) {
@@ -254,7 +250,6 @@ const Index = () => {
       toast.error('Error occurred while harvesting tomato');
     } finally {
       setLoading(false);
-      toast.dismiss(toastId);
     }
   };
 

@@ -98,11 +98,11 @@ const NFTTab: React.FC<NFTTabProps> = ({ userTomatoes, userStats, loading }) => 
                 if (!typeInfo) return null;
 
                 const rarityColor =
-                  typeInfo.rarity === '传说'
+                  typeInfo.rarity === 'Legendary'
                     ? 'border-yellow-400 bg-yellow-50'
-                    : typeInfo.rarity === '史诗'
+                    : typeInfo.rarity === 'Epic'
                     ? 'border-purple-400 bg-purple-50'
-                    : typeInfo.rarity === '稀有'
+                    : typeInfo.rarity === 'Rare'
                     ? 'border-blue-400 bg-blue-50'
                     : 'border-gray-400 bg-gray-50';
 
@@ -111,19 +111,19 @@ const NFTTab: React.FC<NFTTabProps> = ({ userTomatoes, userStats, loading }) => 
                     <NFTCardImage
                       tokenUri={tomato.tokenUri}
                       fallbackEmoji={typeInfo.emoji}
-                      name={`${typeInfo.name} Tomato #${tomato.id}`}
-                      className="w-full h-auto object-cover mb-2 rounded"
+                      name={`${typeInfo.name} Tomato #${String(tomato.id)}`}
+                      className="w-full h-60 object-cover mb-2 rounded"
                     />
                     <h4 className="text-sm font-bold text-gray-800 pixel-font">
-                      {typeInfo.name} Tomato #{tomato.id}
+                      {typeInfo.name} Tomato #{String(tomato.id)}
                     </h4>
                     <Badge
                       className={`text-xs pixel-font mb-1 ${
-                        typeInfo.rarity === '传说'
+                        typeInfo.rarity === 'Legendary'
                           ? 'bg-yellow-500'
-                          : typeInfo.rarity === '史诗'
+                          : typeInfo.rarity === 'Epic'
                           ? 'bg-purple-500'
-                          : typeInfo.rarity === '稀有'
+                          : typeInfo.rarity === 'Rare'
                           ? 'bg-blue-500'
                           : 'bg-gray-500'
                       }`}
@@ -192,10 +192,13 @@ const NFTTab: React.FC<NFTTabProps> = ({ userTomatoes, userStats, loading }) => 
                   if (!typeInfo) return null;
 
                   return (
-                    <div key={tomato.id} className="border-2 border-green-400 bg-green-50 p-3 text-center pixel-card">
+                    <div
+                      key={String(tomato.id)}
+                      className="border-2 border-green-400 bg-green-50 p-3 text-center pixel-card"
+                    >
                       <div className="text-3xl mb-2">{typeInfo.emoji}</div>
                       <h4 className="text-sm font-bold text-gray-800 pixel-font">
-                        {typeInfo.name} Tomato #{tomato.id}
+                        {typeInfo.name} Tomato #{String(tomato.id)}
                       </h4>
                       <div className="text-xs text-gray-600 pixel-font space-y-1">
                         <p>Growth Stage: {tomato.currentGrowthStage}/4</p>

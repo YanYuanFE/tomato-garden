@@ -145,10 +145,11 @@ export class BaseContractService {
   ): Promise<boolean> {
     for (let i = 0; i < maxRetries; i++) {
       try {
-        const receipt: any = await this.provider.getTransactionReceipt(transactionHash);
-        if (receipt && receipt.status) {
-          return receipt.status === 'ACCEPTED_ON_L2' || receipt.status === 'ACCEPTED_ON_L1';
-        }
+        const receipt = await this.provider.waitForTransaction(transactionHash);
+        return receipt.isSuccess();
+        // if (receipt && receipt.status) {
+        //   return receipt.status === 'ACCEPTED_ON_L2' || receipt.status === 'ACCEPTED_ON_L1';
+        // }
       } catch (error) {
         // 交易可能还没有上链，继续等待
       }

@@ -27,7 +27,7 @@ export const TasksTab: React.FC<TasksTabProps> = ({
   serviceReady
 }) => {
   const activeTomato = userTomatoes.find((t) => !t.isHarvestable);
-  const harvestableTomato = userTomatoes.find((t) => t.isHarvestable);
+  const harvestableTomato = userTomatoes.find((t) => t.isHarvestable && !t.isHarvested);
   const totalHarvested = userTomatoes.filter((t) => t.metadata.harvested_at > 0).length;
 
   // Calculate achievement progress

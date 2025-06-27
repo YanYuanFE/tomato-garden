@@ -6,7 +6,7 @@ import { UserStats, TOMATO_TYPE_INFO } from '@/services';
 import { LeaderboardService, LeaderboardEntry, GlobalStats } from '@/services/LeaderboardService';
 import { useState, useEffect } from 'react';
 import { useAccount } from '@starknet-react/core';
-
+import { getChecksumAddress } from 'starknet';
 
 interface NFT {
   id: string;
@@ -35,7 +35,7 @@ const LeaderboardTab: React.FC<LeaderboardTabProps> = ({ nftCollection, userStat
   useEffect(() => {
     const loadLeaderboardData = async () => {
       if (!address) return;
-      
+
       setLeaderboardLoading(true);
       try {
         const [leaderboard, stats, rank] = await Promise.all([
@@ -43,7 +43,7 @@ const LeaderboardTab: React.FC<LeaderboardTabProps> = ({ nftCollection, userStat
           leaderboardService.getGlobalStats(),
           leaderboardService.getUserRank(address)
         ]);
-        
+
         setGlobalLeaderboard(leaderboard);
         setGlobalStats(stats);
         setUserRank(rank);
@@ -73,14 +73,14 @@ const LeaderboardTab: React.FC<LeaderboardTabProps> = ({ nftCollection, userStat
     : 0;
 
   // Use real leaderboard data only
-  const leaderboard = globalLeaderboard.map(entry => ({
+  const leaderboard = globalLeaderboard.map((entry) => ({
     rank: entry.rank,
     name: entry.name || `${entry.address.slice(0, 6)}...${entry.address.slice(-4)}`,
     harvested: entry.harvestedNFTs,
     avatar: entry.name ? entry.name.slice(0, 2).toUpperCase() : 'US',
     totalTomatoes: entry.totalTomatoes,
     rareCollected: entry.rareCollected,
-    isCurrentUser: address ? entry.address.toLowerCase() === address.toLowerCase() : false
+    isCurrentUser: address ? getChecksumAddress(entry.address) === getChecksumAddress(address) : false
   }));
 
   // User achievements and milestones
@@ -188,9 +188,7 @@ const LeaderboardTab: React.FC<LeaderboardTabProps> = ({ nftCollection, userStat
             <div className="text-center py-8">
               <div className="text-4xl mb-4">🌱</div>
               <h3 className="text-lg font-bold text-gray-800 pixel-font mb-2">No Players Yet</h3>
-              <p className="text-sm text-gray-600 pixel-font">
-                Be the first to plant tomatoes and harvest NFTs!
-              </p>
+              <p className="text-sm text-gray-600 pixel-font">Be the first to plant tomatoes and harvest NFTs!</p>
             </div>
           ) : (
             <>
@@ -236,7 +234,9 @@ const LeaderboardTab: React.FC<LeaderboardTabProps> = ({ nftCollection, userStat
 
               {displayUserRank > 10 && (
                 <div className="mt-4 pt-2 border-t-2 border-gray-300">
-                  <div className="text-center text-xs text-gray-500 pixel-font mb-2">... {displayUserRank - 10} more farmers</div>
+                  <div className="text-center text-xs text-gray-500 pixel-font mb-2">
+                    ... {displayUserRank - 10} more farmers
+                  </div>
                   <div className="flex items-center justify-between p-2 border-2 border-red-600 bg-red-50 pixel-card">
                     <div className="flex items-center space-x-2">
                       <div className="w-6 h-6 border-2 border-red-600 bg-red-200 flex items-center justify-center text-xs font-bold pixel-font">

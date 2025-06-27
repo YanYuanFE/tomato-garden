@@ -45,6 +45,7 @@ export class TomatoStakingService extends BaseContractService {
         // Wait for transaction confirmation
         const confirmed = await this.waitForTransaction(response.transaction_hash);
 
+        console.log(confirmed, 'confirmed');
         if (confirmed) {
           return {
             success: true,
@@ -120,6 +121,7 @@ export class TomatoStakingService extends BaseContractService {
       // Execute multicall transaction
       const multicallResult = await this.executeMulticall(calls);
 
+      console.log(multicallResult, 'multi');
       if (multicallResult.success) {
         return {
           ...multicallResult,
@@ -189,7 +191,8 @@ export class TomatoStakingService extends BaseContractService {
 
       const result = await this.executeInvoke(contract, 'harvest_tomato', [tomatoId]);
 
-      if (result.success) {
+      if (result.success && result.transactionHash) {
+        await this.waitForTransaction(result.transactionHash);
         return {
           ...result,
           tokenId: tomatoId,
